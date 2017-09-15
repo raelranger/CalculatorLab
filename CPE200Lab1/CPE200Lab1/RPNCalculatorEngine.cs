@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,26 +7,36 @@ using System.Threading.Tasks;
 
 namespace CPE200Lab1
 {
-    public string Process(string str)
+    class RPNCalculatorEngins : CalculatorEngine
     {
-                    //Split input string to multiple parts by space
-                     List < string > parts = str.Split(' ').ToList<string>();
-        string result;
-                   //As long as we have more than one part
-              while (parts.Count > 1)
+        public string Process(String str)
         {
-                           //Check if the first three is ready for calcuation
-                if (!(isNumber(parts[0]) && isOperator(parts[1]) && isNumber(parts[2])))
+            string result;
+            Stack rpnStack = new Stack();
+            String[] parts = str.Split(' ');
+
+            for (int i = 0; i < parts.Length; i++)
             {
-                return "E";
+                if (isNumber(parts[i]))
+                {
+                    rpnStack.Push(parts[i]);
+                }
+                else if (parts[i] == " ")
+                {
+                    break;
+                }
+                else
+               if (isOperator(parts[i]))
+                {
+
+                    String second = rpnStack.Pop().ToString();
+                    String first = rpnStack.Pop().ToString();
+                    result = calculate(parts[i], first, second);
+                    rpnStack.Push(result);
+                }
             }
-            else
-            {
-                                 //Calculate the first three
-                                     result = calculate(parts[1], parts[0], parts[2], 4);
-                                  //Remove the first three
-                                     parts.RemoveRange(0, 3);
-                                   // Put back the result
-                                     parts.Insert(0, result);
-            }
+            result = rpnStack.Pop().ToString();
+            return result;
         }
+    }
+}
