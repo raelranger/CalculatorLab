@@ -30,6 +30,7 @@ namespace CPE200Lab1
             isAfterOperater = false;
             isAfterEqual = false;
             firstOperand = null;
+            
         }
 
       
